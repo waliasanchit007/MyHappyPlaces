@@ -1,8 +1,10 @@
 package com.example.myhappyplaces.activities
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myhappyplaces.R
@@ -21,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.fabAddHappyPlace.setOnClickListener{
             val intent = Intent(this, AddHappyPlaceActivity::class.java )
-            startActivity(intent)
+            startActivityForResult(intent, ADD_PLACE_ACTIVITY_REQUEST_CODE )
         }
         getHappyPlacesListFromLocalDB()
     }
@@ -30,6 +32,12 @@ class MainActivity : AppCompatActivity() {
         val happyPlaceList = dbHandler.getHappyPlacesList()
 
         if(happyPlaceList.size > 0){
+            for(item  in happyPlaceList){
+                Log.i("listtitle", item.title)
+                Log.i("listdescription", item.description)
+                Log.i("listdata", item.date)
+                Log.i("listlocation", item.location)
+            }
             binding.rvHappyPlacesList.visibility = View.VISIBLE
             binding.tvNoRecordAvailable.visibility = View.GONE
             setupHappyPlaceRecyclerView(happyPlaceList)
@@ -44,5 +52,19 @@ class MainActivity : AppCompatActivity() {
         binding.rvHappyPlacesList.setHasFixedSize(true)
         binding.rvHappyPlacesList.adapter = HappyPlaceAdapter(happyPlaceList, this)
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == ADD_PLACE_ACTIVITY_REQUEST_CODE){
+            if(resultCode == Activity.RESULT_OK){
+                getHappyPlacesListFromLocalDB()
+            }
+        }else{
+            Log.e("Activity", "No new happy place added")
+        }
+    }
+    companion object{
+       private val ADD_PLACE_ACTIVITY_REQUEST_CODE = 1
     }
 }
