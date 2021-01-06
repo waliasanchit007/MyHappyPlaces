@@ -15,6 +15,7 @@ import org.w3c.dom.Text
 open class HappyPlaceAdapter(
         val itemList : ArrayList<HappyPlaceModel>, val context : Context
 ) : RecyclerView.Adapter<HappyPlaceAdapter.viewHolder>() {
+    private var onClickListener : OnClickListener? = null
 
     class viewHolder(view : View) : RecyclerView.ViewHolder(view){
         val iv_place_image = view.findViewById<ImageView>(R.id.iv_place_image)
@@ -32,11 +33,25 @@ open class HappyPlaceAdapter(
         holder.iv_place_image.setImageURI(Uri.parse(model.image))
         holder.tv_title.text = model.title
         holder.tv_description.text = model.description
+        holder.itemView.setOnClickListener{
+            if (onClickListener!= null){
+                onClickListener!!.onClick(position, model)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewHolder {
         return viewHolder(LayoutInflater.from(context)
                 .inflate(R.layout.item_happy_place, parent,false))
+    }
+
+    fun setOnClickListener(onClickListener : OnClickListener){
+        this.onClickListener = onClickListener
+    }
+
+
+    interface OnClickListener{
+        fun onClick(position: Int, model:HappyPlaceModel)
     }
 
 }

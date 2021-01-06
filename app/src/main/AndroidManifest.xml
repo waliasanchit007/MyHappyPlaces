@@ -17,7 +17,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyHappyPlaces">
-        <activity android:name=".activities.HappyPlaceDetailActivity" />
+        <activity
+            android:name=".activities.HappyPlaceDetailActivity"
+            android:label="DETAILS"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomNoActionBarTheme"/>
         <activity
             android:name=".activities.AddHappyPlaceActivity"
             android:label="ADD HAPPY PLACES"

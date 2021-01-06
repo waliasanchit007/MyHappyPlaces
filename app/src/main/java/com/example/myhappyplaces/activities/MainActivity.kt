@@ -32,12 +32,6 @@ class MainActivity : AppCompatActivity() {
         val happyPlaceList = dbHandler.getHappyPlacesList()
 
         if(happyPlaceList.size > 0){
-            for(item  in happyPlaceList){
-                Log.i("listtitle", item.title)
-                Log.i("listdescription", item.description)
-                Log.i("listdata", item.date)
-                Log.i("listlocation", item.location)
-            }
             binding.rvHappyPlacesList.visibility = View.VISIBLE
             binding.tvNoRecordAvailable.visibility = View.GONE
             setupHappyPlaceRecyclerView(happyPlaceList)
@@ -50,8 +44,17 @@ class MainActivity : AppCompatActivity() {
     private fun setupHappyPlaceRecyclerView(happyPlaceList: ArrayList<HappyPlaceModel>){
         binding.rvHappyPlacesList.layoutManager = LinearLayoutManager(this )
         binding.rvHappyPlacesList.setHasFixedSize(true)
-        binding.rvHappyPlacesList.adapter = HappyPlaceAdapter(happyPlaceList, this)
+        val placesAdapter = HappyPlaceAdapter(happyPlaceList, this)
+        binding.rvHappyPlacesList.adapter = placesAdapter
 
+        placesAdapter.setOnClickListener(object : HappyPlaceAdapter.OnClickListener{
+            override fun onClick(position: Int, model: HappyPlaceModel) {
+                val intent = Intent(this@MainActivity,
+                        HappyPlaceDetailActivity::class.java)
+                intent.putExtra(EXTRA_PLACE_DETAILS, model)
+                startActivity(intent)
+            }
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -66,5 +69,6 @@ class MainActivity : AppCompatActivity() {
     }
     companion object{
        private val ADD_PLACE_ACTIVITY_REQUEST_CODE = 1
+        val EXTRA_PLACE_DETAILS = "extra_place_details"
     }
 }

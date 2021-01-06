@@ -75,11 +75,13 @@ class AddHappyPlaceActivity : AppCompatActivity() , View.OnClickListener {
                         calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH)).show()
             }
-            //Two options would be provide to user 1) to select a photo from gallery 2)open camera and click photo
+            //Two options would be provide to user 1) to select a photo from gallery
+            // 2)open camera and click photo
             R.id.tv_add_image -> {
                 val pictureDialog = AlertDialog.Builder(this@AddHappyPlaceActivity)
                 pictureDialog.setTitle("Select Action")
-                pictureDialog.setItems(arrayOf("Select Photo from Gallery", "Click photo using camera")) { dialogInterface: DialogInterface, i: Int ->
+                pictureDialog.setItems(arrayOf("Select Photo from Gallery", "Click photo using camera")) {
+                    dialogInterface: DialogInterface, i: Int ->
                     when (i) {
                         0 -> choosePhotoFromGallery()
                         1 -> takePhotoFromCamera()
@@ -166,7 +168,8 @@ class AddHappyPlaceActivity : AppCompatActivity() , View.OnClickListener {
                         }
                     }
 
-                    override fun onPermissionRationaleShouldBeShown(p0: MutableList<PermissionRequest>?, p1: PermissionToken?) {
+                    override fun onPermissionRationaleShouldBeShown(p0: MutableList<PermissionRequest>?,
+                                                                    p1: PermissionToken?) {
                         showRationaleDialogForPermissions()
                     }
                 }).onSameThread().check()
@@ -186,7 +189,8 @@ class AddHappyPlaceActivity : AppCompatActivity() , View.OnClickListener {
                     val contentUri = data.data
                     var bitmap: Bitmap? = null
                     if (Build.VERSION.SDK_INT >= 29) {
-                        val source = ImageDecoder.createSource(applicationContext.contentResolver, contentUri!!)
+                        val source = ImageDecoder.createSource(
+                                applicationContext.contentResolver, contentUri!!)
                         try {
                             bitmap = ImageDecoder.decodeBitmap(source)
                         } catch (e: IOException) {
@@ -194,7 +198,8 @@ class AddHappyPlaceActivity : AppCompatActivity() , View.OnClickListener {
                         }
                     } else {
                         try {
-                            bitmap = MediaStore.Images.Media.getBitmap(applicationContext.contentResolver, contentUri!!)
+                            bitmap = MediaStore.Images.Media.getBitmap(
+                                    applicationContext.contentResolver, contentUri!!)
                         } catch (e: IOException) {
                             e.printStackTrace()
                         }
@@ -270,7 +275,8 @@ class AddHappyPlaceActivity : AppCompatActivity() , View.OnClickListener {
                     }catch (e: IOException){
                         e.printStackTrace()
                     }
-                }.setNegativeButton("Cancel"){ dialogInterface: DialogInterface, i: Int ->dialogInterface.dismiss()
+                }.setNegativeButton("Cancel"){ dialogInterface: DialogInterface,
+                                               i: Int ->dialogInterface.dismiss()
                 }.show()
     }
 
